@@ -1,0 +1,8 @@
+---
+title: Typography Practice
+year: 2021
+tags:
+- Type
+- Poster
+---
+
