@@ -512,10 +512,10 @@ for i, p in enumerate(feats, 1):
       </article>
 ''')
 home = open('src/index.html', encoding='utf-8').read()
-# reel: newest work projects with still covers (12 cards)
-reel = [p for p in P if not p.get('cover_mp4')][:12]
-reel_html = ''.join(f'<a class="reel-card" href="p-{p["slug"]}.html" aria-label="{H.escape(p["title"])}"><img src="tw/{p["code"]}-1000.webp" alt="" loading="lazy" decoding="async" draggable="false"></a>' for p in reel)
-home = home.replace('<!--REEL-->', reel_html)
+# flip grid: 16 visible cards, every still-cover work project in the pool
+pool = [dict(src=f'tw/{p["code"]}-1000.webp', href=f'p-{p["slug"]}.html', title=p['title']) for p in P if not p.get('cover_mp4')]
+cells = ''.join(f'''<a class="flip" href="{it['href']}" data-i="{i}" aria-label="{H.escape(it['title'])}"><div class="flip-in"><div class="flip-f"><img src="{it['src']}" alt="{H.escape(it['title'])}" loading="lazy" decoding="async"></div><div class="flip-f" style="transform:rotateY(180deg)"><img alt="" decoding="async"></div></div></a>''' for i, it in enumerate(pool[:16]))
+home = home.replace('<!--FLIPGRID-->', cells + '<script type="application/json" id="flipData">' + json.dumps(pool, ensure_ascii=False).replace('</', '<\\/') + '</script>')
 home = (home.replace('<!--FEATURED-->', ''.join(cards)).replace('{{FEATURED_COUNT}}', f'{len(feats):02d}')
             .replace('{{FEATURED_BAR}}', '<i></i>' * len(feats)))
 open(os.path.join(DIST, 'index.html'), 'w').write(home)
