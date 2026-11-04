@@ -249,7 +249,7 @@ html.loading{overflow:hidden}
 
 
 /* arc row: cards on the inside of a cylinder, drifting sideways and flipping */
-.flipg{position:relative;margin-top:200px;height:calc(var(--cw) * 1.333 + 120px);perspective:2200px;perspective-origin:50% 50%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);--cw:clamp(150px,13vw,230px);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.flipg{position:relative;margin-top:200px;height:calc(var(--cw) * 1.333 + 120px);perspective:750px;perspective-origin:50% 50%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 26%,#000 74%,transparent 100%);--cw:clamp(150px,13vw,230px);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .flipg.drag{cursor:grabbing}
 .arc-ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
 .flip{position:absolute;left:calc(var(--cw) / -2);top:calc(var(--cw) * -.6667);width:var(--cw);aspect-ratio:3/4;display:block;border-radius:10px;transform-style:preserve-3d;will-change:transform,opacity}
@@ -258,7 +258,7 @@ html.loading{overflow:hidden}
 .flip-f img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .flip-f::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);pointer-events:none}
 .flip:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-@media (max-width:820px){.flipg{margin-top:120px;--cw:clamp(120px,34vw,170px);perspective:1400px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%)}}
+@media (max-width:820px){.flipg{margin-top:120px;--cw:clamp(120px,34vw,170px);perspective:600px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%)}}
 @media (prefers-reduced-motion:reduce){.flip-in{transition:none}}
 </style>
 </head>
@@ -795,7 +795,7 @@ document.querySelectorAll('.pj>li').forEach(li=>{const b=li.querySelector('.pjt'
   const pool=JSON.parse(data.textContent),cards=[...ring.querySelectorAll('.flip')],n=cards.length;if(!n)return;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   let R=1000,step=.2,off=0,vel=reduce?0:-.0009,base=vel,drag=null,vis=false,lastY=scrollY;
-  function layout(){const w=cards[0].offsetWidth,vw=g.clientWidth;R=Math.max(vw*.95,w*4.5);step=(w*1.1)/R;}
+  function layout(){const w=cards[0].offsetWidth,vw=g.clientWidth;R=Math.max(vw*.42,w*2.5);step=(w*1.1)/R;}
   layout();addEventListener('resize',layout);
   new IntersectionObserver(es=>{vis=es[0].isIntersecting;},{threshold:.05}).observe(g);
   addEventListener('scroll',()=>{const d=scrollY-lastY;lastY=scrollY;if(!reduce)vel-=d*.00006;},{passive:true});
@@ -812,7 +812,7 @@ document.querySelectorAll('.pj>li').forEach(li=>{const b=li.querySelector('.pjt'
     ring.style.transform=`translateZ(${R}px)`;
     const T=total();
     for(let i=0;i<n;i++){let a=((i*step+off)%T+T)%T-T/2;
-      const c=cards[i],deg=a*180/Math.PI,edge=Math.min(1,Math.abs(a)/(Math.PI*.3));
+      const c=cards[i],deg=a*180/Math.PI,edge=Math.min(1,Math.abs(a)/(Math.PI*.42));
       c.style.transform=`rotateY(${deg}deg) translateZ(${-R}px)`;
       c.style.opacity=(1-Math.pow(edge,1.6)).toFixed(3);c.style.visibility=edge>=1?'hidden':'visible';c._a=a;}
   })(last);
