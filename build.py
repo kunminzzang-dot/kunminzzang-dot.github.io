@@ -512,6 +512,10 @@ for i, p in enumerate(feats, 1):
       </article>
 ''')
 home = open('src/index.html', encoding='utf-8').read()
+# reel: newest work projects with still covers (12 cards)
+reel = [p for p in P if not p.get('cover_mp4')][:12]
+reel_html = ''.join(f'<a class="reel-card" href="p-{p["slug"]}.html" aria-label="{H.escape(p["title"])}"><img src="tw/{p["code"]}-1000.webp" alt="" loading="lazy" decoding="async" draggable="false"></a>' for p in reel)
+home = home.replace('<!--REEL-->', reel_html)
 home = (home.replace('<!--FEATURED-->', ''.join(cards)).replace('{{FEATURED_COUNT}}', f'{len(feats):02d}')
             .replace('{{FEATURED_BAR}}', '<i></i>' * len(feats)))
 open(os.path.join(DIST, 'index.html'), 'w').write(home)
